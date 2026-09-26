@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laya-Plus context-kit — stock Laya with 32k context</title>
+<meta name="description" content="What Jev is, what Laya is, Laya's context limits, how we extended it to 32k, and the full kit with code. Unofficial community fork.">
+<meta name="author" content="Kotala Kishan Reddy">
+<meta property="og:title" content="Laya-Plus context-kit">
+<meta property="og:description" content="Stock Laya + 32k context. What, why, and the full kit with code.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FAFAF8">
+<style>
+:root{--bg:#FAFAF8;--ink:#111;--muted:#6b675f;--line:#e5e2da;--card:#fff;--red:#E30613}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 22px}
+.banner{background:var(--ink);color:var(--bg);font-size:12.5px;padding:8px 0;text-align:center}
+header{padding:56px 0 8px}h1{font-family:Georgia,Charter,serif;font-weight:400;font-size:clamp(34px,5vw,52px);line-height:1.08;margin:0 0 12px}
+.sub{color:var(--muted);font-size:18px;max-width:640px}
+section{padding:34px 0;border-top:1px solid var(--line);margin-top:34px}
+h2{font-family:Georgia,Charter,serif;font-weight:400;font-size:30px;margin:0 0 10px}
+h2 .n{color:var(--red);font-style:italic;margin-right:10px}
+p{margin:10px 0}code.k{background:#efede6;padding:1px 6px;border-radius:5px;font-size:14px}
+pre{background:#141412;color:#f2f0e9;border-radius:12px;padding:18px 20px;overflow:auto;font-size:13.5px;line-height:1.6}
+pre .c{color:#8a877d}.kw{color:#ff7a85}.fn{color:#ffd479}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.card .big{font-family:Georgia,serif;font-size:32px}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 0 60px;color:var(--muted);font-size:13.5px}
+footer b{color:var(--ink)}a{color:inherit}
+</style>
+</head>
+<body>
+<div class="banner">Unofficial community fork — not affiliated with ConvAI Innovations or TypeSafe AI.</div>
+<div class="wrap">
+<header>
+<h1>Stock Laya.<br>32k context. Full kit.</h1>
+<p class="sub">Base Laya, byte-identical weights, with Jev-scale context. Nothing else changed.</p>
+</header>
+
+<section id="jev">
+<h2><span class="n">01</span>What is Jev?</h2>
+<p><strong>Jev</strong> (TypeSafe AI, Sept 2026) is a <em>System One</em> model: instead of generating text token-by-token like a chatbot, it takes your messy input (<code class="k">state</code>) plus typed questions and returns structured decisions your code can branch on — a <code class="k">choice</code> (pick one option), a <code class="k">score</code> (place on a rubric), or a <code class="k">noul</code> (yes/no probability). Every answer ships with calibrated probabilities and confidence. No prose, no parsing, no format hallucinations. Closed API-only, $0.042/M input tokens, 70–500ms, 64k context (32k state).</p>
+</section>
+
+<section id="laya">
+<h2><span class="n">02</span>What is Laya?</h2>
+<p><strong>Laya</strong> (Nandakishor Mukkunnoth / ConvAI Innovations — arXiv:2503.23303, arXiv:2510.01237) is the open-weight answer to the same idea: a non-autoregressive System 1 decision engine with the same three primitives (<code class="k">choice</code> / <code class="k">score</code> / <code class="k">noul</code>), Apache-2.0 weights you self-host for $0, ~33ms per decision, 100+ languages via routing. Without that open foundation, none of this exists.</p>
+</section>
+
+<section id="context">
+<h2><span class="n">03</span>Laya's context limits</h2>
+<div class="grid">
+<div class="card"><b>English / typed-decisions</b><span class="big">512</span><p>tokens per forward pass. Long docs get silently truncated.</p></div>
+<div class="card"><b>Multilingual</b><span class="big">1024</span><p>tokens (up to 8k max). Same truncation problem, larger window.</p></div>
+</div>
+<p>Jev accepts 32k of state. Stock Laya cannot see past ~1 page. That is the entire gap this kit closes.</p>
+</section>
+
+<section id="what-we-did">
+<h2><span class="n">04</span>What we did</h2>
+<p><strong>Two paths, zero weight changes</strong> (accuracy and calibration identical to base Laya by construction):</p>
+<p><strong>1. Native 8k.</strong> The ModernBERT encoder already supports 8192 positions (<code class="k">max_position_embeddings=8192</code>) — raise <code class="k">max_len</code> in <code class="k">rl_agent_config.json</code> from 512. No retraining. Validate on your distribution past the trained length.</p>
+<p><strong>2. 32k retrieve-then-decide</strong> (<code class="k">src/laya_longctx.py</code>): chunk long input → rank chunks against your questions with TF-IDF → keep top-3 inside a true-fit 1280-char state budget (fits the 512 window after question + head) → one forward pass. Millisecond overhead, <code class="k">Router</code>-compatible, document order preserved.</p>
+</section>
+
+<section id="kit">
+<h2><span class="n">05</span>The full kit — code and all</h2>
+<p><strong>A. Install</strong> — run this in your <strong>terminal</strong> (shell, not Python):</p>
+<pre>pip install laya scikit-learn
+<span class="c"># alternatives: python -m pip install laya scikit-learn</span>
+<span class="c">#   uv pip install laya scikit-learn</span>
+<span class="c">#   conda install scikit-learn &amp;&amp; pip install laya  (laya is PyPI-only)</span>
+<span class="c"># + copy src/laya_longctx.py from github.com/KotalaKishanReddy/laya-plus</span></pre>
+<p><strong>B. Decide over 32k of state</strong> — run this in <strong>Python</strong>:</p>
+<pre><span class="kw">from</span> laya_longctx <span class="kw">import</span> <span class="fn">LongContextRouter</span>
+
+router = <span class="fn">LongContextRouter</span>(preload=<span class="kw">True</span>)  <span class="c"># english + multilingual resident</span>
+
+ticket = {<span class="fn">"subject"</span>: <span class="fn">"Downtime + billing dispute"</span>,
+          <span class="fn">"body"</span>: open(<span class="fn">"huge_ticket_thread.txt"</span>).read()}  <span class="c"># up to ~32k tokens</span>
+
+questions = {
+  <span class="fn">"queue"</span>: {<span class="fn">"type"</span>: <span class="fn">"choice"</span>,
+    <span class="fn">"instructions"</span>: <span class="fn">"Which queue owns this?"</span>,
+    <span class="fn">"criteria"</span>: {<span class="fn">"infra"</span>: <span class="fn">"outages, downtime"</span>,
+                   <span class="fn">"billing"</span>: <span class="fn">"refunds, SLA"</span>}},
+  <span class="fn">"urgency"</span>: {<span class="fn">"type"</span>: <span class="fn">"score"</span>,
+    <span class="fn">"instructions"</span>: <span class="fn">"How urgent?"</span>,
+    <span class="fn">"criteria"</span>: [<span class="fn">"low"</span>, <span class="fn">"medium"</span>, <span class="fn">"high"</span>, <span class="fn">"critical"</span>]},
+  <span class="fn">"churn"</span>: {<span class="fn">"type"</span>: <span class="fn">"noul"</span>,
+    <span class="fn">"instructions"</span>: <span class="fn">"Will they cancel?"</span>},
+}
+
+res = router.<span class="fn">predict</span>(ticket, questions, top_k=<span class="kw">3</span>)
+<span class="fn">print</span>(res[<span class="fn">"answers"</span>][<span class="fn">"queue"</span>][<span class="fn">"choice"</span>])       <span class="c"># e.g. infra</span>
+<span class="fn">print</span>(res[<span class="fn">"longctx"</span>])  <span class="c"># chunks kept, scores, retrieved True/False</span></pre>
+<p><strong>C. Native 8k bump</strong> (no code — one config value): in your checkpoint's <code class="k">rl_agent_config.json</code>, set <code class="k">"max_len": 8192</code> (or 2048 for safety). Short inputs behave exactly as before.</p>
+<p><strong>Docs:</strong> full guides under <code class="k">/docs</code> on this site (quickstart, primitives, routing, long context, patterns, API). <strong>License:</strong> additions Apache-2.0; base weights per ConvAI terms; see NOTICE.</p>
+</section>
+
+<footer>
+<p><b>Enhanced by Kotala Kishan Reddy.</b> Base work by Nandakishor Mukkunnoth / ConvAI Innovations.</p>
+<p style="text-align:center">Like it? <b>Donate UPI:</b> <code class="k">kishaniscool@upi</code> — fuels V1.1/V2 training compute.</p>
+<p>Unofficial community fork — not affiliated with ConvAI Innovations or TypeSafe AI. Rolling releases; contributors welcome.</p>
+</footer>
+</div>
+</body>
+</html>

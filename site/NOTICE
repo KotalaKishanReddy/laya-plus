@@ -1,0 +1,27 @@
+Laya-Plus — NOTICE (Apache License 2.0, Section 4 attribution)
+
+Laya-Plus is an UNOFFICIAL community fork. It is not affiliated with,
+endorsed by, or sponsored by ConvAI Innovations or TypeSafe AI.
+
+Base work (all rights remain with the original authors):
+  Copyright (c) ConvAI Innovations / Nandakishor Mukkunnoth
+  - Architecture, checkpoints and training recipe from the Laya project.
+  - References:
+    - Code: github.com/NandhaKishorM/laya
+    - Weights: convaiinnovations/laya (Hugging Face)
+    - Papers: arXiv:2503.23303, arXiv:2510.01237
+    - License of base: Apache-2.0 (see the base repository for full terms).
+
+Modifications in this fork:
+  Copyright (c) 2026 Kotala Kishan Reddy
+  - Multi-domain RLCD fine-tune (AG News, Emotion, Banking77 beyond
+    typed-decisions).
+  - Single-GPU LoRA recipe (train.py).
+  - 32k retrieve-then-decide wrapper (long-context handling).
+  - Hierarchical stage-B extension (hier.py / train_stageB.py).
+  - Jev-targeted eval harness with ECE + latency (eval.py / eval_stageB.py).
+  - This site (laya-site/).
+
+This NOTICE file satisfies the Apache-2.0 Section 4 requirement to retain
+attribution notices and state changes. The full license text of the base
+project governs the base files; code additions in this fork are Apache-2.0.

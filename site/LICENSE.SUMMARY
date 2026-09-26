@@ -1,0 +1,18 @@
+Laya-Plus — LICENSE SUMMARY (plain English, not legal advice)
+
+Laya-Plus is an UNOFFICIAL community fork, not affiliated with ConvAI
+Innovations or TypeSafe AI.
+
+- Code in this fork (training scripts, eval harness, 32k wrapper,
+  hierarchical stage-B, this site): Apache-2.0, (c) 2026 Kotala Kishan Reddy.
+  You may use, modify and share it under Apache-2.0 terms. See NOTICE for
+  attribution requirements.
+- Base model / checkpoints / original recipe: belong to ConvAI Innovations /
+  Nandakishor Mukkunnoth under their terms (Apache-2.0 code + weights —
+  check their repo: github.com/NandhaKishorM/laya and
+  convaiinnovations/laya). Their license still applies to their files.
+- Fine-tuned weights from this fork: provenance (base checkpoint, data,
+  recipe, measured scores) is documented in SCORES.md. They derive from the
+  base weights, so the base terms travel with them.
+- No affiliation: "Laya-Plus" keeps the Laya name for lineage clarity only;
+  it does not imply endorsement by ConvAI Innovations or TypeSafe AI.

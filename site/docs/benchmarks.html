@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laya-Plus docs &mdash; Benchmarks + targets</title>
+<meta name="description" content="Laya-Plus: open self-hosted System-1 decision model. Benchmarks + targets">
+<style>:root{--bg:#FAFAF8;--ink:#111;--muted:#6b675f;--line:#e5e2dc;--red:#E30613;--card:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.65;font-size:16px}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:20}
+.brand{font-weight:700;font-size:17px}.brand span{color:var(--red)}
+.topbar .tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+.menu-btn{display:none;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr) 210px;max-width:1280px;margin:0 auto;align-items:start}
+.sidebar{position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;border-right:1px solid var(--line);padding:20px 16px;font-size:14px}
+.sidebar h4{font-size:11px;letter-spacing:.08em;color:var(--muted);margin:18px 0 6px;text-transform:uppercase}
+.sidebar h4:first-child{margin-top:0}
+.sidebar a{display:block;color:var(--ink);text-decoration:none;padding:4px 8px;border-radius:6px;line-height:1.4}
+.sidebar a:hover{background:#f0eee9}.sidebar a.active{background:#111;color:#fff}
+.article{padding:32px 40px;max-width:760px;min-width:0}
+.article h1{font-size:32px;line-height:1.2;margin:0 0 8px}
+.article h2{font-size:22px;margin:32px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+.article h3{font-size:17px;margin:24px 0 8px}
+.lede{color:var(--muted);font-size:18px;line-height:1.6}
+.article a{color:var(--red)}
+.article code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em;background:#f1efeb;padding:1px 6px;border-radius:4px}
+.article pre{background:#141412;color:#f2f0ea;padding:16px;border-radius:8px;overflow-x:auto;font-size:13.5px;line-height:1.55}
+.article pre code{background:none;color:inherit;padding:0}
+.article table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+.article th,.article td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.article th{background:#f3f1ec;font-size:13px}
+.note{border-left:3px solid var(--red);background:#fff;padding:12px 16px;margin:16px 0;font-size:14.5px;border-radius:0 8px 8px 0}
+.toc{position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;padding:24px 16px;font-size:13px;border-left:1px solid var(--line)}
+.toc h4{font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:0 0 8px}
+.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 0}
+.toc a:hover,.toc a.on{color:var(--red)}
+.footer{border-top:1px solid var(--line);padding:20px;text-align:center;font-size:13px;color:var(--muted);max-width:1280px;margin:0 auto}
+.footer b{color:var(--ink)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:14px}
+@media(max-width:1000px){.layout{grid-template-columns:250px minmax(0,1fr)}.toc{display:none}}
+@media(max-width:720px){.layout{grid-template-columns:minmax(0,1fr)}.sidebar{display:none;position:fixed;top:57px;left:0;bottom:0;width:260px;background:var(--bg);z-index:30;box-shadow:2px 0 12px rgba(0,0,0,.1);height:calc(100% - 57px)}.sidebar.open{display:block}.menu-btn{display:inline-block}.article{padding:24px 18px}}</style>
+</head>
+<body>
+<header class="topbar"><button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">Menu</button>
+<div class="brand">Laya<span>-</span>Plus</div><span class="tag">docs</span></header>
+<div class="layout">
+<aside class="sidebar" id="sidebar"><nav><h4>Get started</h4>
+<a data-p="index" href="index.html">Introduction</a>
+<a data-p="quickstart" href="quickstart.html">Quick start</a>
+<a data-p="patterns" href="patterns.html">Example use cases</a>
+<h4>Concepts</h4>
+<a data-p="index" href="index.html#system-one">System One</a>
+<a data-p="primitives" href="primitives.html#state">State</a>
+<a data-p="primitives" href="primitives.html">Primitives: Choice / Score / Noul</a>
+<a data-p="primitives" href="primitives.html#confidence">Confidence</a>
+<a data-p="routing" href="routing.html">Routing</a>
+<a data-p="long-context" href="long-context.html">Long context</a>
+<h4>Patterns</h4>
+<a data-p="patterns" href="patterns.html#confidence-gated-routing">Confidence-gated routing</a>
+<a data-p="patterns" href="patterns.html#shortlist-coarse-to-fine">Shortlist coarse-to-fine</a>
+<a data-p="patterns" href="patterns.html#retrieve-then-decide">Retrieve-then-decide</a>
+<h4>Reference</h4>
+<a data-p="api" href="api.html">Python API</a>
+<a data-p="benchmarks" class="active" href="benchmarks.html">Benchmarks + targets</a>
+<a data-p="llms" href="llms.txt">llms.txt</a></nav></aside>
+<main class="article">
+<h1>Benchmarks + targets</h1>
+<p class="lede">Jev 1.13.0 targets we measure against. Measured columns stay TBD until laya-train/eval.py has actually run &mdash; no fabricated scores.</p>
+<h2 id="targets">Targets</h2>
+<table><tr><th>Suite</th><th>Jev 1.13.0 target</th><th>Measured (this fork)</th></tr>
+<tr><td>typed-decisions accuracy</td><td><code>0.727</code></td><td><code>TBD</code></td></tr>
+<tr><td>AG News accuracy</td><td><code>0.910</code></td><td><code>TBD</code></td></tr>
+<tr><td>Emotion accuracy</td><td><code>0.480</code></td><td><code>TBD</code></td></tr>
+<tr><td>Banking77 accuracy (shortlist k=20)</td><td><code>0.870</code></td><td><code>TBD</code></td></tr>
+<tr><td>ECE (calibration)</td><td><code>0.246</code></td><td><code>TBD</code></td></tr>
+<tr><td>Latency 1Q / 10Q batched</td><td><code>256ms / 1500ms</code></td><td><code>TBD</code></td></tr></table>
+<h2 id="method">Method notes</h2>
+<table><tr><th>Suite</th><th>Dataset</th><th>Method</th></tr>
+<tr><td>typed-decisions</td><td><code>LocalLLaMA/typed-decisions</code> test split</td><td>choice/score/noul per gold distributions; accuracy + ECE</td></tr>
+<tr><td>AG News</td><td><code>fancyzhx/ag_news</code> test</td><td>4-way choice, one prompt; accuracy + ECE</td></tr>
+<tr><td>Emotion</td><td><code>dair-ai/emotion</code></td><td>6-way choice; accuracy</td></tr>
+<tr><td>Banking77</td><td>PolyAI banking77</td><td>77 options subsampled to &le;16 incl. gold at train; shortlist k=20 at eval</td></tr>
+<tr><td>Latency</td><td>local timing</td><td>P50 per question, 1Q and 10Q batched</td></tr></table>
+<h2 id="repro">Reproducing</h2>
+<pre><code>.venv/bin/python laya-train/eval.py &lt;ckpt_dir&gt; [--suite all|td|ag|emo|bank77]</code></pre>
+<p>Checkpoint dir layout follows <code>checkpoint_latest</code>: <code>model.safetensors</code>,
+<code>encoder/</code>, <code>tokenizer/</code>, <code>rl_agent_config.json</code>, with fallback to
+base repo files and <code>calibration.json</code> temperatures when present.</p>
+<h2 id="status">Status</h2>
+<div class="note">All measured values are <code>TBD</code>: the harness exists and the targets are
+pinned, but no scored run has been recorded for this fork yet. When a run lands, this page gets the
+numbers plus the commit and checkpoint they came from.</div>
+<nav class="pager"><a href="api.html">&larr; Python API</a><span></span></nav>
+</main>
+<aside class="toc"><h4>On this page</h4><a href="#targets">Targets</a>
+<a href="#method">Method notes</a>
+<a href="#repro">Reproducing</a>
+<a href="#status">Status</a></aside>
+</div>
+<div class="footer"><b>Laya-Plus docs</b> &mdash; Unofficial community fork, not affiliated with ConvAI Innovations or TypeSafe AI.<br>Enhanced by Kotala Kishan Reddy.</div>
+<script>(function(){var b=document.getElementById('menuBtn'),s=document.getElementById('sidebar');
+if(b&&s){b.addEventListener('click',function(){s.classList.toggle('open');});}
+var links=Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+function spy(){var best=null;links.forEach(function(a){var id=a.getAttribute('href').slice(1);
+var el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<120){best=a;}});
+links.forEach(function(a){a.classList.toggle('on',a===best);});}
+document.addEventListener('scroll',spy,{passive:true});spy();})();</script>
+</body>
+</html>

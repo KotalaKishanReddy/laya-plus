@@ -1,0 +1,20 @@
+# Laya-Plus docs (llms.txt)
+
+Laya-Plus: open self-hosted System-1 decision model.
+state + typed questions -> calibrated choice / score / noul probabilities. No text generation.
+
+Pages (relative links):
+- Introduction: index.html — System One, checkpoints, Jev targets
+- Quick start: quickstart.html — pip install + 20-line Router example
+- Primitives: primitives.html — State, Choice, Score, Noul, parallel single-pass, Confidence
+- Routing: routing.html — Router, route precedence, script detection, preload, task opt-in
+- Long context: long-context.html — retrieve-then-decide wrapper + stage-B Aggregator (32k)
+- Patterns: patterns.html — confidence-gated routing, shortlist coarse-to-fine,
+  retrieve-then-decide, example use cases
+- Python API: api.html — Router / Agent / LongContextRouter / chunk utils /
+  Aggregator / shortlist / eval harness signatures
+- Benchmarks + targets: benchmarks.html — Jev 1.13.0 targets
+  (td 0.727 / ag 0.910 / emo 0.480 / b77 0.870 / ECE 0.246); measured = TBD
+
+Unofficial community fork, not affiliated with ConvAI Innovations or TypeSafe AI.
+Enhanced by Kotala Kishan Reddy.
